@@ -149,7 +149,7 @@ export default function AiTutorPage() {
             <h3 className="font-bold text-lg mb-2">📄 رفع ملف للتحليل الذكي</h3>
             <p className="text-sm text-gray-600 mb-4">سنستخرج الأسئلة، نلخص المحتوى، ونولد تدريبات منهجية.</p>
             <label className="block border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-blue-500 transition">
-              <input type="file" accept=".pdf" className="hidden" onChange={(e) => handlePdfUpload(e.target.files?.[0])} />
+              <input type="file" accept=".pdf" className="hidden" onChange={() => {}} />
               <span className="text-3xl mb-2 block">📤</span>
               <span className="text-sm text-gray-700">اضغط لاختيار ملف PDF</span>
             </label>
