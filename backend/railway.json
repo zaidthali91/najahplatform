@@ -1,0 +1,22 @@
+<<<<<<< HEAD
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "node src/server.demo.js",
+    "restartPolicyType": "ON_FAILURE"
+  }
+=======
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "node src/server.demo.js",
+    "restartPolicyType": "ON_FAILURE"
+  }
+>>>>>>> 260af1e (fix package.json)
+}
