@@ -19,3 +19,4 @@ export interface AuthResponse {
   tokens: { access: string; refresh: string }
   message: string
 }
+export type TrackType = 'science' | 'literary' | 'general'
