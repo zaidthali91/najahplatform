@@ -20,3 +20,10 @@ export interface AuthResponse {
   message: string
 }
 export type TrackType = 'science' | 'literary' | 'general'
+
+
+export enum TrackType {
+  DAYTIME = 'daytime',
+  EVENING = 'evening',
+  OPEN = 'open'
+}
