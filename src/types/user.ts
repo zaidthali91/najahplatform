@@ -19,8 +19,6 @@ export interface AuthResponse {
   tokens: { access: string; refresh: string }
   message: string
 }
-export type TrackType = 'science' | 'literary' | 'general'
-
 
 export enum TrackType {
   DAYTIME = 'daytime',
