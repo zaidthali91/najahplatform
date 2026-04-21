@@ -82,8 +82,9 @@ export const useAuthStore = create<AuthStore>()(
     }),
     {
       name:    'najah-auth',
-      storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ user: state.user, token: state.token }),
+storage: createJSONStorage(() =>
+  typeof window !== 'undefined' ? localStorage : sessionStorage
+),      partialize: (state) => ({ user: state.user, token: state.token }),
     }
   )
 )
@@ -95,23 +96,17 @@ interface ThemeStore {
   setTheme:    (t: 'dark' | 'light') => void
 }
 
-export const useThemeStore = create<ThemeStore>()(
-  persist(
-    (set) => ({
-      theme: 'dark',
-      toggleTheme: () => set(state => {
-        const next = state.theme === 'dark' ? 'light' : 'dark'
-        document.documentElement.setAttribute('data-theme', next)
-        return { theme: next }
-      }),
-      setTheme: (t) => {
-        document.documentElement.setAttribute('data-theme', t)
-        set({ theme: t })
-      },
-    }),
-    { name: 'najah-theme' }
-  )
-)
+toggleTheme: () => set(state => {
+  const next = state.theme === 'dark' ? 'light' : 'dark'
+  if (typeof window !== 'undefined')
+    document.documentElement.setAttribute('data-theme', next)
+  return { theme: next }
+}),
+setTheme: (t) => {
+  if (typeof window !== 'undefined')
+    document.documentElement.setAttribute('data-theme', t)
+  set({ theme: t })
+},
 
 // ==================== Exam Store ====================
 interface ExamStore {
