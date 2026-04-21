@@ -1,4 +1,5 @@
 // frontend/src/app/layout.tsx
+'use client'
 import type { Metadata } from 'next'
 import { Cairo, Tajawal } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
