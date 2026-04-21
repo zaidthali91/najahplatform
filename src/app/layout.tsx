@@ -3,7 +3,10 @@ import type { Metadata } from 'next'
 import { Cairo, Tajawal } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import { Providers } from '@/components/layout/Providers'
+import Navbar from '@/components/layout/Navbar'
 import './globals.css'
+
+export const dynamic = 'force-dynamic'
 
 const cairo = Cairo({
   subsets: ['arabic', 'latin'],
