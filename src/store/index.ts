@@ -1,4 +1,5 @@
 // frontend/src/store/index.ts
+'use client'
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
@@ -46,6 +47,22 @@ export interface ExamSession {
   isComplete:    boolean
 }
 
+// SSR-safe storage
+const safeStorage = {
+  getItem: (name: string) => {
+    if (typeof window === 'undefined') return null
+    return localStorage.getItem(name)
+  },
+  setItem: (name: string, value: string) => {
+    if (typeof window === 'undefined') return
+    localStorage.setItem(name, value)
+  },
+  removeItem: (name: string) => {
+    if (typeof window === 'undefined') return
+    localStorage.removeItem(name)
+  },
+}
+
 // ==================== Auth Store ====================
 interface AuthStore {
   user:         User | null
@@ -61,7 +78,7 @@ interface AuthStore {
 
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       user:      null,
       token:     null,
       isLoading: false,
@@ -82,9 +99,8 @@ export const useAuthStore = create<AuthStore>()(
     }),
     {
       name:    'najah-auth',
-storage: createJSONStorage(() =>
-  typeof window !== 'undefined' ? localStorage : sessionStorage
-),      partialize: (state) => ({ user: state.user, token: state.token }),
+      storage: createJSONStorage(() => safeStorage),
+      partialize: (state) => ({ user: state.user, token: state.token }),
     }
   )
 )
@@ -96,17 +112,28 @@ interface ThemeStore {
   setTheme:    (t: 'dark' | 'light') => void
 }
 
-toggleTheme: () => set(state => {
-  const next = state.theme === 'dark' ? 'light' : 'dark'
-  if (typeof window !== 'undefined')
-    document.documentElement.setAttribute('data-theme', next)
-  return { theme: next }
-}),
-setTheme: (t) => {
-  if (typeof window !== 'undefined')
-    document.documentElement.setAttribute('data-theme', t)
-  set({ theme: t })
-},
+export const useThemeStore = create<ThemeStore>()(
+  persist(
+    (set) => ({
+      theme: 'dark',
+      toggleTheme: () => set(state => {
+        const next = state.theme === 'dark' ? 'light' : 'dark'
+        if (typeof window !== 'undefined')
+          document.documentElement.setAttribute('data-theme', next)
+        return { theme: next }
+      }),
+      setTheme: (t) => {
+        if (typeof window !== 'undefined')
+          document.documentElement.setAttribute('data-theme', t)
+        set({ theme: t })
+      },
+    }),
+    {
+      name:    'najah-theme',
+      storage: createJSONStorage(() => safeStorage),
+    }
+  )
+)
 
 // ==================== Exam Store ====================
 interface ExamStore {
@@ -160,11 +187,10 @@ export const useExamStore = create<ExamStore>()((set, get) => ({
 
   nextQuestion: () => set(state => {
     if (!state.session) return state
-    const nextIdx = state.session.currentIndex + 1
     return {
       hintUsed: false,
       answered: false,
-      session:  { ...state.session, currentIndex: nextIdx },
+      session:  { ...state.session, currentIndex: state.session.currentIndex + 1 },
     }
   }),
 
