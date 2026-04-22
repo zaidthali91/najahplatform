@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'  
 'use client'
 // frontend/src/app/tutor/page.tsx
 import { useState, useRef, useEffect, useCallback } from 'react'

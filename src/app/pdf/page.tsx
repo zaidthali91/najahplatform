@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'  
 'use client'
 // frontend/src/app/pdf/page.tsx
 import { useState, useRef, useCallback } from 'react'

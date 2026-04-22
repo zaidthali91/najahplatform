@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'  
 // frontend/src/app/pricing/page.tsx
 'use client'
 import { useState } from 'react'
